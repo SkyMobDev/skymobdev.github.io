@@ -93,6 +93,7 @@
         font-weight: bold;
         background: var(--gradient);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         animation: float 3s ease-in-out infinite;
       }
@@ -266,6 +267,7 @@
         margin-bottom: 20px;
         background: var(--gradient);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
       }
 
@@ -377,6 +379,7 @@
         margin-bottom: 20px;
         background: var(--gradient);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
       }
 
@@ -706,11 +709,11 @@
             <p class="feature-description">
               <span class="pt-content"
                 >Automatização completa do processo de corte. Do projeto à
-                máquina em segundos, não em horas.</span
+                máquina em minutos, não em dias.</span
               >
               <span class="en-content"
                 >Complete automation of the cutting process. From design to
-                machine in seconds, not hours.</span
+                machine in minutes, not days.</span
               >
             </p>
           </div>
@@ -823,13 +826,11 @@
           <input
             type="email"
             placeholder="seu@email.com"
-            required
             class="pt-content"
           />
           <input
             type="email"
             placeholder="your@email.com"
-            required
             class="en-content"
             style="display: none"
           />
@@ -932,16 +933,61 @@
       reveal(); // Initial check
 
       // Newsletter form handler
+      // Dynamically set required attribute on visible email input
+      function updateEmailRequired() {
+        const lang = document.documentElement.lang;
+        const ptInput = document.querySelector('.pt-content[type="email"]');
+        const enInput = document.querySelector('.en-content[type="email"]');
+        if (lang === 'pt') {
+          ptInput.required = true;
+          enInput.required = false;
+        } else {
+          ptInput.required = false;
+          enInput.required = true;
+        }
+      }
+
+      // Call on language change and on page load
+      document.addEventListener('DOMContentLoaded', updateEmailRequired);
+      // If you have a language switcher, call updateEmailRequired after switching language
       function handleSubmit(event) {
         event.preventDefault();
         const lang = document.documentElement.lang;
-        const successMessage =
-          lang === "pt"
-            ? "Obrigado! Você será notificado em breve."
-            : "Thank you! You will be notified soon.";
+        // Get the correct email input based on language
+        let emailInput;
+        if (lang === "pt") {
+          emailInput = event.target.querySelector('.pt-content[type="email"]');
+        } else {
+          emailInput = event.target.querySelector('.en-content[type="email"]');
+        }
+        const email = emailInput ? emailInput.value : '';
 
-        alert(successMessage);
-        event.target.reset();
+        fetch('https://waitinglist.lemonflower-00848636.eastus.azurecontainerapps.io/waitingList', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email })
+        })
+        .then(response => {
+          if (response.status === 200) {
+            const successMessage =
+              lang === "pt"
+                ? "Obrigado! Você será notificado em breve."
+                : "Thank you! You will be notified soon.";
+            alert(successMessage);
+            event.target.reset();
+          } else {
+            throw new Error('Network response was not ok');
+          }
+        })
+        .catch(error => {
+          const errorMessage =
+            lang === "pt"
+              ? "Ocorreu um erro. Tente novamente mais tarde."
+              : "An error occurred. Please try again later.";
+          alert(errorMessage);
+        });
       }
 
       // Initialize with Portuguese
