@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkyMob - Revolucionando a Indústria Moveleira</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1e40af;
+        --secondary: #10b981;
+        --accent: #f59e0b;
+        --dark: #111827;
+        --light: #f9fafb;
+        --gray: #6b7280;
+        --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        color: var(--dark);
+        overflow-x: hidden;
+        background: var(--light);
+      }
+
+      /* Language Switcher */
+      .lang-switch {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        display: flex;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 8px;
+        border-radius: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+      }
+
+      .lang-btn {
+        padding: 8px 16px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        color: var(--gray);
+      }
+
+      .lang-btn.active {
+        background: var(--primary);
+        color: white;
+      }
+
+      .lang-btn:hover:not(.active) {
+        background: rgba(37, 99, 235, 0.1);
+      }
+
+      /* Navigation */
+      nav {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 999;
+        padding: 20px 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--dark);
+        font-weight: 500;
+        transition: color 0.3s ease;
+        position: relative;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      /* Hero Section */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        overflow: hidden;
+        padding-top: 80px;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,138.7C672,149,768,203,864,213.3C960,224,1056,192,1152,165.3C1248,139,1344,117,1392,106.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>')
+          no-repeat center;
+        animation: wave 20s linear infinite;
+      }
+
+      @keyframes wave {
+        0% {
+          transform: translateX(0) translateY(0);
+        }
+        50% {
+          transform: translateX(-25%) translateY(10px);
+        }
+        100% {
+          transform: translateX(0) translateY(0);
+        }
+      }
+
+      .hero-content {
+        text-align: center;
+        color: white;
+        z-index: 1;
+        max-width: 800px;
+        padding: 0 20px;
+        animation: fadeInUp 1s ease;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        margin-bottom: 20px;
+        animation: slideInFromTop 1s ease;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .hero .subtitle {
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        margin-bottom: 30px;
+        opacity: 0.95;
+        animation: slideInFromBottom 1s ease 0.2s both;
+      }
+
+      .launch-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 10px 20px;
+        border-radius: 30px;
+        margin-bottom: 40px;
+        backdrop-filter: blur(10px);
+        animation: pulse 2s infinite;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .cta-group {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-primary {
+        background: white;
+        color: var(--primary);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: white;
+        border: 2px solid white;
+      }
+
+      .btn-secondary:hover {
+        background: white;
+        color: var(--primary);
+      }
+
+      /* Features Section */
+      .features {
+        padding: 100px 20px;
+        background: linear-gradient(to bottom, var(--light), white);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: clamp(2rem, 4vw, 3rem);
+        margin-bottom: 20px;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .section-subtitle {
+        text-align: center;
+        color: var(--gray);
+        font-size: 1.2rem;
+        margin-bottom: 60px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+      }
+
+      .feature-card {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .feature-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .feature-card:nth-child(2) .feature-icon {
+        animation-delay: 0.5s;
+      }
+
+      .feature-card:nth-child(3) .feature-icon {
+        animation-delay: 1s;
+      }
+
+      .feature-card:nth-child(4) .feature-icon {
+        animation-delay: 1.5s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .feature-title {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+        color: var(--dark);
+      }
+
+      .feature-description {
+        color: var(--gray);
+        line-height: 1.8;
+      }
+
+      /* About Section */
+      .about {
+        padding: 100px 20px;
+        background: white;
+      }
+
+      .about-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .about-text h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .about-text p {
+        color: var(--gray);
+        line-height: 1.8;
+        margin-bottom: 20px;
+      }
+
+      .about-visual {
+        position: relative;
+        height: 400px;
+        background: var(--gradient);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .about-visual::before {
+        content: "";
+        position: absolute;
+        width: 150%;
+        height: 150%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate 20s linear infinite;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Newsletter Section */
+      .newsletter {
+        padding: 100px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .newsletter-content {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .newsletter h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      .newsletter p {
+        font-size: 1.2rem;
+        margin-bottom: 40px;
+        opacity: 0.95;
+      }
+
+      .newsletter-form {
+        display: flex;
+        gap: 10px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .newsletter-form input {
+        flex: 1;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .newsletter-form button {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 30px;
+        background: var(--accent);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .newsletter-form button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Footer */
+      footer {
+        padding: 50px 20px;
+        background: var(--dark);
+        color: white;
+        text-align: center;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      .footer-links a {
+        color: white;
+        text-decoration: none;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        opacity: 1;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInFromTop {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInFromBottom {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+
+        .about-content {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+
+        .newsletter-form {
+          flex-direction: column;
+        }
+
+        .cta-group {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .btn {
+          width: 100%;
+          max-width: 300px;
+        }
+      }
+
+      /* Scroll reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease;
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Language specific content */
+      [lang="en"] .pt-content,
+      [lang="pt"] .en-content {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Language Switcher -->
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="switchLanguage('pt')">PT</button>
+      <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+      <div class="nav-container">
+        <div class="logo">SkyMob</div>
+        <ul class="nav-links">
+          <li>
+            <a href="#home" class="nav-link">
+              <span class="pt-content">Início</span>
+              <span class="en-content">Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="#features" class="nav-link">
+              <span class="pt-content">Solução</span>
+              <span class="en-content">Solution</span>
+            </a>
+          </li>
+          <li>
+            <a href="#about" class="nav-link">
+              <span class="pt-content">Sobre</span>
+              <span class="en-content">About</span>
+            </a>
+          </li>
+          <li>
+            <a href="#newsletter" class="nav-link">
+              <span class="pt-content">Contato</span>
+              <span class="en-content">Contact</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <div class="launch-badge">
+          <span class="pt-content">🚀 Lançamento: 2º Trimestre 2026</span>
+          <span class="en-content">🚀 Launch: Q2 2026</span>
+        </div>
+        <h1>
+          <span class="pt-content"
+            >O Futuro da Indústria Moveleira Começa Aqui</span
+          >
+          <span class="en-content"
+            >The Future of Furniture Manufacturing Starts Here</span
+          >
+        </h1>
+        <p class="subtitle">
+          <span class="pt-content"
+            >Uma revolução tecnológica que conecta, otimiza e transforma a forma
+            como você produz</span
+          >
+          <span class="en-content"
+            >A technological revolution that connects, optimizes and transforms
+            how you produce</span
+          >
+        </p>
+        <div class="cta-group">
+          <a href="#newsletter" class="btn btn-primary">
+            <span class="pt-content">Seja um Pioneiro</span>
+            <span class="en-content">Be a Pioneer</span>
+          </a>
+          <a href="#features" class="btn btn-secondary">
+            <span class="pt-content">Saiba Mais</span>
+            <span class="en-content">Learn More</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="container">
+        <h2 class="section-title reveal">
+          <span class="pt-content">Prepare-se para a Transformação</span>
+          <span class="en-content">Prepare for Transformation</span>
+        </h2>
+        <p class="section-subtitle reveal">
+          <span class="pt-content"
+            >Tecnologia de ponta encontra a tradição moveleira</span
+          >
+          <span class="en-content"
+            >Cutting-edge technology meets furniture tradition</span
+          >
+        </p>
+        <div class="features-grid">
+          <div class="feature-card reveal">
+            <div class="feature-icon">📉</div>
+            <h3 class="feature-title">
+              <span class="pt-content">Desperdício Zero</span>
+              <span class="en-content">Zero Waste</span>
+            </h3>
+            <p class="feature-description">
+              <span class="pt-content"
+                >Algoritmos inteligentes que aproveitam cada centímetro da sua
+                matéria-prima, reduzindo custos e aumentando lucros.</span
+              >
+              <span class="en-content"
+                >Intelligent algorithms that utilize every inch of your raw
+                materials, reducing costs and increasing profits.</span
+              >
+            </p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon">⚡</div>
+            <h3 class="feature-title">
+              <span class="pt-content">Velocidade Inédita</span>
+              <span class="en-content">Unprecedented Speed</span>
+            </h3>
+            <p class="feature-description">
+              <span class="pt-content"
+                >Automatização completa do processo de corte. Do projeto à
+                máquina em segundos, não em horas.</span
+              >
+              <span class="en-content"
+                >Complete automation of the cutting process. From design to
+                machine in seconds, not hours.</span
+              >
+            </p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon">🌐</div>
+            <h3 class="feature-title">
+              <span class="pt-content">Conexão Total</span>
+              <span class="en-content">Total Connection</span>
+            </h3>
+            <p class="feature-description">
+              <span class="pt-content"
+                >Uma plataforma que une marceneiros, projetistas e fabricantes
+                em tempo real. Colaboração sem fronteiras.</span
+              >
+              <span class="en-content"
+                >A platform that unites carpenters, designers and manufacturers
+                in real-time. Collaboration without borders.</span
+              >
+            </p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-icon">☁️</div>
+            <h3 class="feature-title">
+              <span class="pt-content">100% na Nuvem</span>
+              <span class="en-content">100% Cloud-Based</span>
+            </h3>
+            <p class="feature-description">
+              <span class="pt-content"
+                >Acesse de qualquer lugar, a qualquer momento. Sem instalações,
+                sem complicações. Simples e poderoso.</span
+              >
+              <span class="en-content"
+                >Access from anywhere, anytime. No installations, no
+                complications. Simple and powerful.</span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+      <div class="about-content">
+        <div class="about-text reveal">
+          <h2>
+            <span class="pt-content">Uma Parceria de Sucesso</span>
+            <span class="en-content">A Successful Partnership</span>
+          </h2>
+          <p>
+            <span class="pt-content"
+              >Em colaboração com o
+              <strong>Instituto SENAI em Eficiência Operacional</strong>,
+              estamos desenvolvendo a solução definitiva para os desafios do
+              setor moveleiro.</span
+            >
+            <span class="en-content"
+              >In collaboration with the
+              <strong>SENAI Institute for Operational Efficiency</strong>, we
+              are developing the definitive solution for the furniture
+              industry's challenges.</span
+            >
+          </p>
+          <p>
+            <span class="pt-content"
+              >Nossa missão é clara: transformar a forma como o setor produz,
+              conectando pessoas e tecnologia para gerar mais valor com menos
+              recursos.</span
+            >
+            <span class="en-content"
+              >Our mission is clear: transform how the industry produces,
+              connecting people and technology to generate more value with fewer
+              resources.</span
+            >
+          </p>
+          <p>
+            <span class="pt-content"
+              >Junte-se a nós nesta revolução. O futuro da marcenaria é digital,
+              eficiente e sustentável.</span
+            >
+            <span class="en-content"
+              >Join us in this revolution. The future of woodworking is digital,
+              efficient, and sustainable.</span
+            >
+          </p>
+        </div>
+        <div class="about-visual reveal">
+          <div style="color: white; font-size: 72px; z-index: 1">🚀</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter" id="newsletter">
+      <div class="newsletter-content reveal">
+        <h2>
+          <span class="pt-content">Seja o Primeiro a Saber</span>
+          <span class="en-content">Be the First to Know</span>
+        </h2>
+        <p>
+          <span class="pt-content"
+            >Cadastre-se para receber atualizações exclusivas e acesso
+            antecipado</span
+          >
+          <span class="en-content"
+            >Sign up to receive exclusive updates and early access</span
+          >
+        </p>
+        <form class="newsletter-form" onsubmit="handleSubmit(event)">
+          <input
+            type="email"
+            placeholder="seu@email.com"
+            required
+            class="pt-content"
+          />
+          <input
+            type="email"
+            placeholder="your@email.com"
+            required
+            class="en-content"
+            style="display: none"
+          />
+          <button type="submit">
+            <span class="pt-content">Inscrever</span>
+            <span class="en-content">Subscribe</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-links">
+          <a href="mailto:contato@skymob.com.br">contato@skymob.com.br</a>
+          <a href="#">
+            <span class="pt-content">Brasil</span>
+            <span class="en-content">Brazil</span>
+          </a>
+          <a href="#">© 2024 SkyMob</a>
+        </div>
+        <p style="opacity: 0.6; margin-top: 20px">
+          <span class="pt-content"
+            >Transformando o futuro, uma chapa por vez.</span
+          >
+          <span class="en-content"
+            >Transforming the future, one sheet at a time.</span
+          >
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Language switcher
+      function switchLanguage(lang) {
+        document.documentElement.lang = lang;
+        document.querySelectorAll(".lang-btn").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+        event.target.classList.add("active");
+
+        // Update email placeholder
+        const emailInputs = document.querySelectorAll(
+          '.newsletter-form input[type="email"]'
+        );
+        if (lang === "pt") {
+          emailInputs[0].style.display = "block";
+          emailInputs[1].style.display = "none";
+        } else {
+          emailInputs[0].style.display = "none";
+          emailInputs[1].style.display = "block";
+        }
+      }
+
+      // Smooth scrolling
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Scroll reveal animation
+      function reveal() {
+        const reveals = document.querySelectorAll(".reveal");
+
+        reveals.forEach((element) => {
+          const windowHeight = window.innerHeight;
+          const elementTop = element.getBoundingClientRect().top;
+          const elementVisible = 150;
+
+          if (elementTop < windowHeight - elementVisible) {
+            element.classList.add("active");
+          }
+        });
+      }
+
+      window.addEventListener("scroll", reveal);
+      reveal(); // Initial check
+
+      // Newsletter form handler
+      function handleSubmit(event) {
+        event.preventDefault();
+        const lang = document.documentElement.lang;
+        const successMessage =
+          lang === "pt"
+            ? "Obrigado! Você será notificado em breve."
+            : "Thank you! You will be notified soon.";
+
+        alert(successMessage);
+        event.target.reset();
+      }
+
+      // Add some parallax effect to hero
+      window.addEventListener("scroll", () => {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector(".hero");
+        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+      });
+
+      // Initialize with Portuguese
+      document.documentElement.lang = "pt";
+    </script>
+  </body>
+</html>
