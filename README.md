@@ -1,14 +1,8 @@
 # SkyMob Site
 
-The website for the SkyMob company.
-
-## Features
-- Static HTML site
-
-## Getting Started
-1. Clone this repository.
-2. Open `index.html` in your browser.
+Redirect stub for `skymob.com.br`. The live site is at https://skymob.app.
 
 ## Project Structure
-- `index.html` — Main site page
-- `README.md` — Project documentation
+- `index.html` — Redirects to https://skymob.app (JS `location.replace`, with `<meta refresh>` and a manual link as fallbacks)
+- `404.html` — Same redirect, so unknown paths also land on the live site
+- `CNAME` — GitHub Pages custom domain
